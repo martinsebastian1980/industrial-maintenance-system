@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{maintenanceOrder.title}}
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .navigation {
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 9px 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background: #d1d5db;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .info p {
+            margin: 10px 0;
+        }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+        .action-button {
+            display: inline-block;
+            border: none;
+            padding: 9px 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .action-button:hover {
+            background: #d1d5db;
+        }
+
+        .history-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>
+            {{maintenanceOrder.title}}
+        </h1>
+
+        <p>
+            Detalle de la orden de mantenimiento.
+        </p>
+
+    </header>
+
+
+    <main>
+
+        <div class="navigation">
+
+            <a
+                class="button"
+                href="/maintenance-orders"
+            >
+                ← Volver a órdenes
+            </a>
+
+            <a
+                class="button"
+                href="/"
+            >
+                🏠 Inicio
+            </a>
+
+        </div>
+
+
+        <section class="card">
+
+            <h2>
+                Información de la orden
+            </h2>
+
+            <div class="info">
+
+                <p>
+                    <strong>Equipo:</strong>
+                    {{maintenanceOrder.equipment.name}}
+                </p>
+
+                <p>
+                    <strong>Descripción:</strong>
+                    {{maintenanceOrder.description}}
+                </p>
+
+                <p>
+                    <strong>Tipo:</strong>
+                    {{maintenanceType maintenanceOrder.type}}
+                </p>
+
+                <p>
+                    <strong>Prioridad:</strong>
+                    {{priority maintenanceOrder.priority}}
+                </p>
+
+                <p>
+                    <strong>Estado:</strong>
+                    {{orderStatus maintenanceOrder.status}}
+                </p>
+
+                <p>
+                    <strong>Fecha programada:</strong>
+                    {{maintenanceOrder.scheduledDate}}
+                </p>
+
+                {{#if maintenanceOrder.startedAt}}
+
+                    <p>
+                        <strong>Fecha de inicio:</strong>
+                        {{maintenanceOrder.startedAt}}
+                    </p>
+
+                {{/if}}
+
+                {{#if maintenanceOrder.completedAt}}
+
+                    <p>
+                        <strong>Fecha de finalización:</strong>
+                        {{maintenanceOrder.completedAt}}
+                    </p>
+
+                {{/if}}
+
+            </div>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>
+                Cambiar estado
+            </h2>
+
+            <div class="actions">
+
+                {{#if (eq maintenanceOrder.status "pending")}}
+
+                    <form
+                        action="/maintenance-orders/{{maintenanceOrder._id}}/status"
+                        method="POST"
+                        style="display: inline;"
+                    >
+
+                        <input
+                            type="hidden"
+                            name="status"
+                            value="in_progress"
+                        >
+
+                        <button
+                            type="submit"
+                            class="action-button"
+                        >
+                            Iniciar mantenimiento
+                        </button>
+
+                    </form>
+
+
+                    <form
+                        action="/maintenance-orders/{{maintenanceOrder._id}}/status"
+                        method="POST"
+                        style="display: inline;"
+                    >
+
+                        <input
+                            type="hidden"
+                            name="status"
+                            value="cancelled"
+                        >
+
+                        <button
+                            type="submit"
+                            class="action-button"
+                        >
+                            Cancelar orden
+                        </button>
+
+                    </form>
+
+                {{/if}}
+
+
+                {{#if (eq maintenanceOrder.status "in_progress")}}
+
+                    <form
+                        action="/maintenance-orders/{{maintenanceOrder._id}}/status"
+                        method="POST"
+                        style="display: inline;"
+                    >
+
+                        <input
+                            type="hidden"
+                            name="status"
+                            value="completed"
+                        >
+
+                        <button
+                            type="submit"
+                            class="action-button"
+                        >
+                            Completar mantenimiento
+                        </button>
+
+                    </form>
+
+
+                    <form
+                        action="/maintenance-orders/{{maintenanceOrder._id}}/status"
+                        method="POST"
+                        style="display: inline;"
+                    >
+
+                        <input
+                            type="hidden"
+                            name="status"
+                            value="cancelled"
+                        >
+
+                        <button
+                            type="submit"
+                            class="action-button"
+                        >
+                            Cancelar orden
+                        </button>
+
+                    </form>
+
+                {{/if}}
+
+            </div>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>
+                Historial de estados
+            </h2>
+
+            {{#if history}}
+
+                {{#each history}}
+
+                    <div class="history-item">
+
+                        <p>
+                            <strong>Estado anterior:</strong>
+                            {{orderStatus fromStatus}}
+                        </p>
+
+                        <p>
+                            <strong>Estado nuevo:</strong>
+                            {{orderStatus toStatus}}
+                        </p>
+
+                        <p>
+                            <strong>Fecha:</strong>
+                            {{createdAt}}
+                        </p>
+
+                    </div>
+
+                {{/each}}
+
+            {{else}}
+
+                <p>
+                    No hay cambios de estado registrados.
+                </p>
+
+            {{/if}}
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>
+                Acciones
+            </h2>
+
+            <a
+                class="button"
+                href="/maintenance-orders/{{maintenanceOrder._id}}/edit"
+            >
+                Editar orden
+            </a>
+
+
+            <form
+                action="/maintenance-orders/{{maintenanceOrder._id}}/delete"
+                method="POST"
+                style="display: inline;"
+            >
+
+                <button
+                    type="submit"
+                    class="action-button"
+                    onclick="return confirm('¿Estás seguro de que querés eliminar esta orden de mantenimiento?');"
+                >
+                    Eliminar orden
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

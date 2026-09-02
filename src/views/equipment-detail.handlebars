@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{equipment.name}}
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .navigation {
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 9px 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background: #d1d5db;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .info p {
+            margin: 12px 0;
+        }
+
+        .actions {
+            margin-top: 10px;
+        }
+
+        .delete-button {
+            border: none;
+            padding: 9px 14px;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .delete-button:hover {
+            background: #d1d5db;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>
+            {{equipment.name}}
+        </h1>
+
+        <p>
+            Detalle del equipo.
+        </p>
+
+    </header>
+
+
+    <main>
+
+        <div class="navigation">
+
+            <a
+                class="button"
+                href="/"
+            >
+                ← Volver al inicio
+            </a>
+
+            <a
+                class="button"
+                href="/equipment/{{equipment._id}}/edit"
+            >
+                Editar equipo
+            </a>
+
+        </div>
+
+
+        <section class="card">
+
+            <h2>
+                Información del equipo
+            </h2>
+
+            <div class="info">
+
+                <p>
+                    <strong>Marca:</strong>
+                    {{equipment.brand}}
+                </p>
+
+                <p>
+                    <strong>Modelo:</strong>
+                    {{equipment.model}}
+                </p>
+
+                <p>
+                    <strong>Estado:</strong>
+                    {{equipmentStatus equipment.status}}
+                </p>
+
+                <p>
+                    <strong>ID:</strong>
+                    {{equipment._id}}
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>
+                Acciones
+            </h2>
+
+            <div class="actions">
+
+                <form
+                    action="/equipment/{{equipment._id}}/delete"
+                    method="POST"
+                >
+
+                    <button
+                        type="submit"
+                        class="delete-button"
+                        onclick="return confirm('¿Estás seguro de que querés eliminar este equipo?');"
+                    >
+                        Eliminar equipo
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

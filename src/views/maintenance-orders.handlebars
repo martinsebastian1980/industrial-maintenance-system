@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Órdenes de mantenimiento
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .navigation {
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 9px 14px;
+            margin-right: 10px;
+            text-decoration: none;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background: #d1d5db;
+        }
+
+        .orders {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(280px, 1fr)
+            );
+
+            gap: 20px;
+        }
+
+        .order-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .order-card h2 {
+            margin-top: 0;
+        }
+
+        .order-card p {
+            margin: 8px 0;
+        }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+        .delete-button {
+            border: none;
+            padding: 9px 14px;
+            margin-left: 10px;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background: #d1d5db;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>
+            Órdenes de mantenimiento
+        </h1>
+
+        <p>
+            Gestión y seguimiento de las órdenes de mantenimiento industrial.
+        </p>
+
+    </header>
+
+    <main>
+
+        <div class="navigation">
+
+            <a
+                class="button"
+                href="/"
+            >
+                ← Volver al inicio
+            </a>
+
+            <a
+                class="button"
+                href="/maintenance-orders/new"
+            >
+                + Nueva orden
+            </a>
+
+        </div>
+
+
+        <section>
+
+            <h2>
+                Órdenes registradas
+            </h2>
+
+            <div class="orders">
+
+                {{#each maintenanceOrders}}
+
+                    <div class="order-card">
+
+                        <h2>
+                            {{title}}
+                        </h2>
+
+                        <p>
+                            <strong>Equipo:</strong>
+                            {{equipment.name}}
+                        </p>
+
+                        <p>
+                            <strong>Tipo:</strong>
+                            {{maintenanceType type}}
+                        </p>
+
+                        <p>
+                            <strong>Prioridad:</strong>
+                            {{priority priority}}
+                        </p>
+
+                        <p>
+                            <strong>Estado:</strong>
+                            {{orderStatus status}}
+                        </p>
+
+                        <p>
+                            <strong>Fecha programada:</strong>
+                            {{scheduledDate}}
+                        </p>
+
+                        <div class="actions">
+
+                            <a
+                                class="button"
+                                href="/maintenance-orders/{{_id}}"
+                            >
+                                Ver orden
+                            </a>
+
+                            <form
+                                action="/maintenance-orders/{{_id}}/delete"
+                                method="POST"
+                                style="display: inline;"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="delete-button"
+                                    onclick="return confirm('¿Estás seguro de que querés eliminar esta orden de mantenimiento?');"
+                                >
+                                    Eliminar orden
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                {{/each}}
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

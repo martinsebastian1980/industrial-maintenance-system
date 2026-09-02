@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Sistema de Gestión de Mantenimiento
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-size: 16px;
+        }
+
+        .number {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 10px 0 0;
+        }
+
+        .item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .item h3,
+        .item h2 {
+            margin-top: 0;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-top: 10px;
+            text-decoration: none;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background: #d1d5db;
+        }
+
+        .navigation {
+            margin-bottom: 30px;
+        }
+
+        .navigation a {
+            margin-right: 15px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>
+            Sistema de Gestión de Mantenimiento Industrial
+        </h1>
+
+        <p>
+            Gestión y seguimiento del mantenimiento industrial.
+        </p>
+
+    </header>
+
+    <main>
+
+        <div class="navigation">
+
+            <a
+                class="button"
+                href="/equipment/new"
+            >
+                + Nuevo equipo
+            </a>
+
+            <a
+                class="button"
+                href="/equipment"
+            >
+                Ver todos los equipos
+            </a>
+
+
+            <a
+                class="button"
+                href="/maintenance-orders/new"
+            >
+                + Nueva orden
+            </a>
+
+            <a
+                class="button"
+                href="/maintenance-orders"
+            >
+                Ver todas las órdenes
+            </a>
+
+        </div>
+
+
+        <section class="section">
+
+            <h2>
+                Resumen
+            </h2>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <h3>
+                        Equipos registrados
+                    </h3>
+
+                    <p class="number">
+                        {{dashboard.equipmentCount}}
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>
+                        Órdenes totales
+                    </h3>
+
+                    <p class="number">
+                        {{dashboard.maintenanceOrderCount}}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="section">
+
+            <h2>
+                Estado de los equipos
+            </h2>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <h3>
+                        Operativos
+                    </h3>
+
+                    <p class="number">
+                        {{dashboard.operationalEquipment}}
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>
+                        En mantenimiento
+                    </h3>
+
+                    <p class="number">
+                        {{dashboard.maintenanceEquipment}}
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>
+                        Inactivos
+                    </h3>
+
+                    <p class="number">
+                        {{dashboard.inactiveEquipment}}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="section">
+
+            <h2>
+                Estado de las órdenes
+            </h2>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <h3>
+                        Pendientes
+                    </h3>
+
+                    <p class="number">
+                        {{dashboard.pendingOrders}}
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>
+                        En progreso
+                    </h3>
+
+                    <p class="number">
+                        {{dashboard.inProgressOrders}}
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>
+                        Completadas
+                    </h3>
+
+                    <p class="number">
+                        {{dashboard.completedOrders}}
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>
+                        Canceladas
+                    </h3>
+
+                    <p class="number">
+                        {{dashboard.cancelledOrders}}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="section">
+
+            <h2>
+                Órdenes de mantenimiento
+            </h2>
+
+            {{#each maintenanceOrders}}
+
+                <div class="item">
+
+                    <h3>
+                        {{title}}
+                    </h3>
+
+                    <p>
+                        <strong>Equipo:</strong>
+                        {{equipment.name}}
+                    </p>
+
+                    <p>
+                        <strong>Prioridad:</strong>
+                        {{priority priority}}
+                    </p>
+
+                    <p>
+                        <strong>Estado:</strong>
+                        {{orderStatus status}}
+                    </p>
+
+                    <a
+                        class="button"
+                        href="/maintenance-orders/{{_id}}"
+                    >
+                        Ver orden
+                    </a>
+
+                </div>
+
+            {{/each}}
+
+        </section>
+
+
+        <section class="section">
+
+            <h2>
+                Equipos
+            </h2>
+
+            {{#each equipment}}
+
+                <div class="item">
+
+                    <h3>
+                        {{name}}
+                    </h3>
+
+                    <p>
+                        <strong>Marca:</strong>
+                        {{brand}}
+                    </p>
+
+                    <p>
+                        <strong>Modelo:</strong>
+                        {{model}}
+                    </p>
+
+                    <p>
+                        <strong>Estado:</strong>
+                        {{equipmentStatus status}}
+
+                    </p>
+
+                    <a
+                        class="button"
+                        href="/equipment/{{_id}}"
+                    >
+                        Ver equipo
+                    </a>
+
+                    <a
+                        class="button"
+                        href="/equipment/{{_id}}/edit"
+                    >
+                        Editar
+                    </a>
+
+                </div>
+
+            {{/each}}
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

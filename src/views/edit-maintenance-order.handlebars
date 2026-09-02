@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Editar orden de mantenimiento
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .navigation {
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 9px 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background: #d1d5db;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .field textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            border: none;
+            padding: 10px 16px;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .submit-button:hover {
+            background: #d1d5db;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>
+            Editar orden de mantenimiento
+        </h1>
+
+        <p>
+            Modificar la información de la orden.
+        </p>
+
+    </header>
+
+
+    <main>
+
+        <div class="navigation">
+
+            <a
+                class="button"
+                href="/maintenance-orders/{{maintenanceOrder._id}}"
+            >
+                ← Volver a la orden
+            </a>
+
+            <a
+                class="button"
+                href="/"
+            >
+                🏠 Inicio
+            </a>
+
+        </div>
+
+
+        <section class="card">
+
+            <form
+                action="/maintenance-orders/{{maintenanceOrder._id}}/edit"
+                method="POST"
+            >
+
+                <div class="field">
+
+                    <label for="equipment">
+                        Equipo
+                    </label>
+
+                    <select
+                        id="equipment"
+                        name="equipment"
+                        required
+                    >
+
+                        {{#each equipment}}
+
+                            <option
+                                value="{{_id}}"
+                                {{#if (eq _id ../maintenanceOrder.equipment._id)}}
+                                    selected
+                                {{/if}}
+                            >
+                                {{name}}
+                            </option>
+
+                        {{/each}}
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="title">
+                        Título
+                    </label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        value="{{maintenanceOrder.title}}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="description">
+                        Descripción
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        required
+                    >{{maintenanceOrder.description}}</textarea>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="type">
+                        Tipo
+                    </label>
+
+                    <select
+                        id="type"
+                        name="type"
+                        required
+                    >
+
+                        <option
+                            value="preventive"
+                            {{#if (eq maintenanceOrder.type "preventive")}}
+                                selected
+                            {{/if}}
+                        >
+                            Preventivo
+                        </option>
+
+                        <option
+                            value="corrective"
+                            {{#if (eq maintenanceOrder.type "corrective")}}
+                                selected
+                            {{/if}}
+                        >
+                            Correctivo
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="priority">
+                        Prioridad
+                    </label>
+
+                    <select
+                        id="priority"
+                        name="priority"
+                        required
+                    >
+
+                        <option
+                            value="low"
+                            {{#if (eq maintenanceOrder.priority "low")}}
+                                selected
+                            {{/if}}
+                        >
+                            Baja
+                        </option>
+
+                        <option
+                            value="medium"
+                            {{#if (eq maintenanceOrder.priority "medium")}}
+                                selected
+                            {{/if}}
+                        >
+                            Media
+                        </option>
+
+                        <option
+                            value="high"
+                            {{#if (eq maintenanceOrder.priority "high")}}
+                                selected
+                            {{/if}}
+                        >
+                            Alta
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="scheduledDate">
+                        Fecha programada
+                    </label>
+
+                    <input
+                        type="date"
+                        id="scheduledDate"
+                        name="scheduledDate"
+                        value="{{maintenanceOrder.scheduledDate}}"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                >
+                    Guardar cambios
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

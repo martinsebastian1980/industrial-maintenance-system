@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Error
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .error-message {
+            margin-bottom: 20px;
+        }
+
+        .error-code {
+            color: #666;
+        }
+
+        .actions {
+            margin-top: 25px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 9px 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background: #d1d5db;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>
+            ⚠️ No se pudo realizar la operación
+        </h1>
+
+        <p>
+            El sistema no pudo completar la acción solicitada.
+        </p>
+
+    </header>
+
+
+    <main>
+
+        <section class="card">
+
+            <div class="error-message">
+
+                <h2>
+                    {{message}}
+                </h2>
+
+                {{#if statusCode}}
+
+                    <p class="error-code">
+
+                        <strong>
+                            Código de error:
+                        </strong>
+
+                        {{statusCode}}
+
+                    </p>
+
+                {{/if}}
+
+            </div>
+
+
+            {{#if maintenanceOrderId}}
+
+                <hr>
+
+                <h2>
+                    Orden de mantenimiento activa
+                </h2>
+
+                <p>
+                    Esta orden debe ser completada o cancelada
+                    antes de eliminar el equipo.
+                </p>
+
+                <div class="actions">
+
+                    <a
+                        class="button"
+                        href="/maintenance-orders/{{maintenanceOrderId}}"
+                    >
+                        Ver orden de mantenimiento
+                    </a>
+
+                </div>
+
+            {{/if}}
+
+
+            <div class="actions">
+
+                {{#if returnUrl}}
+
+                    <a
+                        class="button"
+                        href="{{returnUrl}}"
+                    >
+                        ← Volver al equipo
+                    </a>
+
+                {{/if}}
+
+
+                <a
+                    class="button"
+                    href="/"
+                >
+                    🏠 Volver al inicio
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

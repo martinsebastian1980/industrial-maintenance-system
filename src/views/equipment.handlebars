@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Equipos
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .navigation {
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 9px 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background: #d1d5db;
+        }
+
+        .equipment-list {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(280px, 1fr)
+            );
+            gap: 20px;
+        }
+
+        .equipment-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .equipment-card h2 {
+            margin-top: 0;
+        }
+
+        .equipment-card p {
+            margin: 8px 0;
+        }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>
+            Equipos
+        </h1>
+
+        <p>
+            Gestión de los equipos registrados en el sistema.
+        </p>
+
+    </header>
+
+
+    <main>
+
+        <div class="navigation">
+
+            <a
+                class="button"
+                href="/"
+            >
+                ← Volver al inicio
+            </a>
+
+            <a
+                class="button"
+                href="/equipment/new"
+            >
+                + Nuevo equipo
+            </a>
+
+        </div>
+
+
+        <section>
+
+            <h2>
+                Equipos registrados
+            </h2>
+
+            <div class="equipment-list">
+
+                {{#each equipment}}
+
+                    <div class="equipment-card">
+
+                        <h2>
+                            {{name}}
+                        </h2>
+
+                        <p>
+                            <strong>Marca:</strong>
+                            {{brand}}
+                        </p>
+
+                        <p>
+                            <strong>Modelo:</strong>
+                            {{model}}
+                        </p>
+
+                        <p>
+                            <strong>Estado:</strong>
+                            {{equipmentStatus status}}
+                        </p>
+
+                        <div class="actions">
+
+                            <a
+                                class="button"
+                                href="/equipment/{{_id}}"
+                            >
+                                Ver equipo
+                            </a>
+
+                            <a
+                                class="button"
+                                href="/equipment/{{_id}}/edit"
+                            >
+                                Editar
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {{/each}}
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

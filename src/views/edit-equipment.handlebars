@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Editar equipo
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .navigation {
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 9px 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background: #d1d5db;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .submit-button {
+            border: none;
+            padding: 10px 16px;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .submit-button:hover {
+            background: #d1d5db;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>
+            Editar equipo
+        </h1>
+
+        <p>
+            Modificar la información del equipo.
+        </p>
+
+    </header>
+
+
+    <main>
+
+        <div class="navigation">
+
+            <a
+                class="button"
+                href="/equipment/{{equipment._id}}"
+            >
+                ← Volver al equipo
+            </a>
+
+            <a
+                class="button"
+                href="/"
+            >
+                🏠 Inicio
+            </a>
+
+        </div>
+
+
+        <section class="card">
+
+            <form
+                action="/equipment/{{equipment._id}}/edit"
+                method="POST"
+            >
+
+                <div class="field">
+
+                    <label for="name">
+                        Nombre
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value="{{equipment.name}}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="brand">
+                        Marca
+                    </label>
+
+                    <input
+                        type="text"
+                        id="brand"
+                        name="brand"
+                        value="{{equipment.brand}}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="model">
+                        Modelo
+                    </label>
+
+                    <input
+                        type="text"
+                        id="model"
+                        name="model"
+                        value="{{equipment.model}}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="status">
+                        Estado
+                    </label>
+
+                    <select
+                        id="status"
+                        name="status"
+                        required
+                    >
+
+                        <option
+                            value="operational"
+                            {{#if (eq equipment.status "operational")}}
+                                selected
+                            {{/if}}
+                        >
+                            Operativo
+                        </option>
+
+                        <option
+                            value="maintenance"
+                            {{#if (eq equipment.status "maintenance")}}
+                                selected
+                            {{/if}}
+                        >
+                            En mantenimiento
+                        </option>
+
+                        <option
+                            value="inactive"
+                            {{#if (eq equipment.status "inactive")}}
+                                selected
+                            {{/if}}
+                        >
+                            Fuera de servicio
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                >
+                    Guardar cambios
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
