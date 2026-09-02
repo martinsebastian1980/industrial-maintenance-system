@@ -125,9 +125,9 @@ Ejemplo:
 GET /api/maintenance-orders?status=pending&priority=high&page=1&limit=10
 Instalación
 Clonar el repositorio:
-git clone URL_DEL_REPOSITORIO
+git clone https://github.com/martinsebastian1980/industrial-maintenance-system.git
 Entrar al proyecto:
-cd maintenance-system-VSC
+cd industrial-maintenance-system
 Instalar dependencias:
 npm install
 Variables de entorno
