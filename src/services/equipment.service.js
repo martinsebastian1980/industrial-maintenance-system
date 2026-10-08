@@ -18,7 +18,7 @@ export const updateEquipmentService = async (id, equipmentData) => {
         id,
         equipmentData,
         {
-            new: true,
+            returnDocument: "after",
             runValidators: true
         }
     );

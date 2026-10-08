@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Detalle del usuario
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .navigation {
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 9px 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background: #d1d5db;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .value {
+            padding: 10px;
+            background: #f4f6f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>
+            Detalle del usuario
+        </h1>
+
+        <p>
+            Información del usuario del sistema.
+        </p>
+
+    </header>
+
+
+    <main>
+
+        <div class="navigation">
+
+            <a
+                class="button"
+                href="/users"
+            >
+                ← Volver a usuarios
+            </a>
+
+            <a
+                class="button"
+                href="/users/{{userDetail._id}}/edit"
+            >
+                Editar usuario
+            </a>
+
+        </div>
+
+
+        <section class="card">
+
+            <div class="field">
+
+                <label>
+                    Nombre
+                </label>
+
+                <div class="value">
+                    {{userDetail.firstName}}
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Apellido
+                </label>
+
+                <div class="value">
+                    {{userDetail.lastName}}
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Email
+                </label>
+
+                <div class="value">
+                    {{userDetail.email}}
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Rol
+                </label>
+
+                <div class="value">
+                    {{roleName userDetail.role}}
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

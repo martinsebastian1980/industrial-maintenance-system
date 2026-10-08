@@ -2,6 +2,22 @@ export const handlebarsHelpers = {
 
     eq: (a, b) => a === b,
 
+    roleName: (role) => {
+
+        const roles = {
+
+            admin: "Administrador",
+
+            supervisor: "Supervisor",
+
+            technician: "Técnico"
+
+        };
+
+        return roles[role] || role;
+
+    },
+
     equipmentStatus: (status) => {
 
         const statuses = {

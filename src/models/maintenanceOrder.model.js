@@ -7,6 +7,11 @@ const maintenanceOrderSchema = new mongoose.Schema(
             ref: "Equipment",
             required: true
         },
+        assignedTo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+         default: null
+        },
         title: {
             type: String,
             required: true,

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Usuarios
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .navigation {
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 9px 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            background: #e5e7eb;
+            color: #222;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background: #d1d5db;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f3f4f6;
+            font-weight: bold;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .user-link {
+            color: #222;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .user-link:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>
+            Usuarios
+        </h1>
+
+        <p>
+            Gestión de usuarios del sistema.
+        </p>
+
+    </header>
+
+
+    <main>
+
+        <div class="navigation">
+
+            <a
+                class="button"
+                href="/"
+            >
+                ← Volver al inicio
+            </a>
+
+            {{#if (eq user.role "admin")}}
+
+                <a
+                    class="button"
+                    href="/users/new"
+                >
+                    + Nuevo usuario
+                </a>
+
+            {{/if}}
+
+        </div>
+
+
+        <section class="card">
+
+            {{#if users.length}}
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Email</th>
+                            <th>Rol</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {{#each users}}
+
+                            <tr>
+
+                                <td>
+                                    {{firstName}}
+                                </td>
+
+                                <td>
+                                    {{lastName}}
+                                </td>
+
+                                <td>
+                                    {{email}}
+                                </td>
+
+                                <td>
+                                    {{roleName role}}
+                                </td>
+
+                                <td>
+                                    <a class="button" href="/users/{{_id}}">
+                                        Ver
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                        {{/each}}
+
+                    </tbody>
+
+                </table>
+
+            {{else}}
+
+                <p>
+                    No hay usuarios registrados.
+                </p>
+
+            {{/if}}
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

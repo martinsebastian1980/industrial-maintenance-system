@@ -9,7 +9,20 @@ import { connectDB } from "./config/database.js";
 import { errorMiddleware } from "./middlewares/error.middleware.js";
 import { handlebarsHelpers } from "./helpers/handlebars.helpers.js";
 
+import userRouter from "./routes/user.routes.js";
+import authRouter from "./routes/auth.routes.js";
+
+import session from "express-session";
+
 const app = express();
+
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false
+    })
+);
 
 app.engine(
     "handlebars",
@@ -31,6 +44,8 @@ app.use("/", viewRouter);
 
 app.use("/api/equipment", equipmentRouter);
 app.use("/api/maintenance-orders", maintenanceOrderRouter);
+app.use("/api/users", userRouter);
+app.use("/api/auth", authRouter);
 
 app.use(errorMiddleware);
 

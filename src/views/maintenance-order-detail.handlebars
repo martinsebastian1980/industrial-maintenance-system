@@ -192,6 +192,12 @@
                     {{maintenanceOrder.scheduledDate}}
                 </p>
 
+                <p>
+                    <strong>Técnico asignado:</strong>
+                    {{maintenanceOrder.assignedTo.firstName}}
+                    {{maintenanceOrder.assignedTo.lastName}}
+                </p>
+
                 {{#if maintenanceOrder.startedAt}}
 
                     <p>
@@ -367,35 +373,50 @@
 
         <section class="card">
 
-            <h2>
-                Acciones
-            </h2>
+    <h2>
+        Acciones
+    </h2>
 
-            <a
-                class="button"
-                href="/maintenance-orders/{{maintenanceOrder._id}}/edit"
+    {{#if (eq user.role "admin")}}
+
+        <a
+            class="button"
+            href="/maintenance-orders/{{maintenanceOrder._id}}/edit"
+        >
+            Editar orden
+        </a>
+
+        <form
+            action="/maintenance-orders/{{maintenanceOrder._id}}/delete"
+            method="POST"
+            style="display: inline;"
+        >
+
+            <button
+                type="submit"
+                class="action-button"
+                onclick="return confirm('¿Estás seguro de que querés eliminar esta orden de mantenimiento?');"
             >
-                Editar orden
-            </a>
+                Eliminar orden
+            </button>
+
+        </form>
+
+    {{/if}}
 
 
-            <form
-                action="/maintenance-orders/{{maintenanceOrder._id}}/delete"
-                method="POST"
-                style="display: inline;"
-            >
+    {{#if (eq user.role "supervisor")}}
 
-                <button
-                    type="submit"
-                    class="action-button"
-                    onclick="return confirm('¿Estás seguro de que querés eliminar esta orden de mantenimiento?');"
-                >
-                    Eliminar orden
-                </button>
+        <a
+            class="button"
+            href="/maintenance-orders/{{maintenanceOrder._id}}/edit"
+        >
+            Editar orden
+        </a>
 
-            </form>
+    {{/if}}
 
-        </section>
+</section>
 
     </main>
 

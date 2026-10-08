@@ -15,23 +15,53 @@ import {
 
 import { asyncHandler } from "../middlewares/asyncHandler.js";
 
+import { isAuthenticated } from "../middlewares/auth.middleware.js";
+
+import { authorizeRoles } from "../middlewares/role.middleware.js";
+
 const router = express.Router();
 
-router.get("/", asyncHandler(getMaintenanceOrders));
+router.get(
+    "/",
+    isAuthenticated,
+    asyncHandler(getMaintenanceOrders)
+);
 
 router.get(
     "/:id/history",
+    isAuthenticated,
     asyncHandler(getMaintenanceOrderHistoryController)
 );
 
-router.get("/:id", asyncHandler(getMaintenanceOrder));
+router.get(
+    "/:id",
+    isAuthenticated,
+    asyncHandler(getMaintenanceOrder)
+);
 
-router.post("/", asyncHandler(createMaintenanceOrder));
+router.post("/",
+                isAuthenticated,
+                authorizeRoles("admin", "supervisor"),
+                asyncHandler(createMaintenanceOrder)
+            );
 
-router.put("/:id", asyncHandler(updateMaintenanceOrder));
+router.put(
+    "/:id",
+    isAuthenticated,
+    authorizeRoles("admin", "supervisor"),
+    asyncHandler(updateMaintenanceOrder)
+);
 
-router.patch("/:id/status",asyncHandler(updateMaintenanceOrderStatus));
+router.patch(
+    "/:id/status",
+    isAuthenticated,
+    asyncHandler(updateMaintenanceOrderStatus)
+);
 
-router.delete("/:id", asyncHandler(deleteMaintenanceOrder));
+router.delete(
+    "/:id",
+    isAuthenticated,
+    asyncHandler(deleteMaintenanceOrder)
+);
 
 export default router;

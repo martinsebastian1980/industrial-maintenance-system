@@ -31,7 +31,34 @@
         header {
             background: #1f2937;
             color: white;
-            padding: 30px;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-content h1 {
+            margin: 0 0 8px;
+        }
+
+        .header-content p {
+            margin: 0;
+        }
+
+        .logout-form {
+             margin: 0;
+}
+
+        .logout-button {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 5px;
+            background: #dc2626;
+            color: white;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background: #b91c1c;
         }
 
         header h1 {
@@ -46,6 +73,13 @@
             max-width: 1100px;
             margin: 0 auto;
             padding: 30px 20px;
+        }
+
+        .user-info {
+            margin-top: 12px;
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
         }
 
         .section {
@@ -119,6 +153,8 @@
 
     <header>
 
+         <div class="header-content">
+
         <h1>
             Sistema de Gestión de Mantenimiento Industrial
         </h1>
@@ -127,18 +163,43 @@
             Gestión y seguimiento del mantenimiento industrial.
         </p>
 
+        <div class="user-info">
+            <span>Usuario: {{user.firstName}} {{user.lastName}}</span>
+            <span>Rol: {{roleName user.role}}</span>
+        </div>
+
+    </div>
+
+    <form
+        class="logout-form"
+        action="/logout"
+        method="POST"
+    >
+        <button
+            class="logout-button"
+            type="submit"
+        >
+            Cerrar sesión
+        </button>
+    </form>
+
     </header>
 
     <main>
 
         <div class="navigation">
 
-            <a
-                class="button"
-                href="/equipment/new"
-            >
-                + Nuevo equipo
-            </a>
+            {{#if (eq user.role "admin")}}
+
+                <a
+                   class="button"
+                   href="/equipment/new"
+                >
+            + Nuevo equipo
+                </a>
+
+            {{/if}}
+
 
             <a
                 class="button"
@@ -148,12 +209,29 @@
             </a>
 
 
-            <a
-                class="button"
-                href="/maintenance-orders/new"
-            >
-                + Nueva orden
-            </a>
+            {{#if (eq user.role "admin")}}
+
+               <a
+                   class="button"
+                  href="/maintenance-orders/new"
+               >
+                 + Nueva orden
+              </a>
+
+            {{/if}}
+
+
+            {{#if (eq user.role "supervisor")}}
+
+             <a
+                 class="button"
+                 href="/maintenance-orders/new"
+             >
+                 + Nueva orden
+             </a>
+
+            {{/if}}
+
 
             <a
                 class="button"
@@ -161,6 +239,18 @@
             >
                 Ver todas las órdenes
             </a>
+
+
+            {{#if (eq user.role "admin")}}
+
+                <a
+                    class="button"
+                    href="/users"
+                >
+                    👥 Gestionar usuarios
+                </a>
+
+            {{/if}}
 
         </div>
 

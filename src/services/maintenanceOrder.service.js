@@ -1,5 +1,6 @@
 import Equipment from "../models/equipment.model.js";
 import MaintenanceOrder from "../models/maintenanceOrder.model.js";
+import { User } from "../models/user.model.js";
 import { createMaintenanceOrderHistory } from "./maintenanceOrderHistory.service.js";
 
 export const getAllMaintenanceOrders = async (
@@ -65,6 +66,7 @@ export const getAllMaintenanceOrders = async (
     const orders = await MaintenanceOrder
         .find(query)
         .populate("equipment")
+        .populate("assignedTo", "firstName lastName email role")
         .sort(sort)
         .skip(skip)
         .limit(limit)
@@ -85,17 +87,35 @@ export const getAllMaintenanceOrders = async (
 export const getMaintenanceOrderById = async (id) => {
     return await MaintenanceOrder
         .findById(id)
-        .populate("equipment");
+        .populate("equipment")
+        .populate("assignedTo", "firstName lastName email role");
 };
 
 export const createMaintenanceOrderService = async (orderData) => {
+
     const equipment = await Equipment.findById(orderData.equipment);
 
     if (!equipment) {
         const error = new Error("Equipo no encontrado");
         error.statusCode = 404;
-
         throw error;
+    }
+
+    if (orderData.assignedTo) {
+
+        const technician = await User.findOne({
+            _id: orderData.assignedTo,
+            role: "technician"
+        });
+
+        if (!technician) {
+            const error = new Error(
+                "El usuario asignado no existe o no es técnico"
+            );
+
+            error.statusCode = 400;
+            throw error;
+        }
     }
 
     return await MaintenanceOrder.create(orderData);
@@ -103,9 +123,27 @@ export const createMaintenanceOrderService = async (orderData) => {
 
 export const updateMaintenanceOrderService = async (id, orderData) => {
 
+    if (orderData.assignedTo) {
+    const technician = await User.findOne({
+        _id: orderData.assignedTo,
+        role: "technician"
+    });
+
+    if (!technician) {
+        const error = new Error(
+            "El usuario asignado no existe o no es técnico"
+        );
+
+        error.statusCode = 400;
+        throw error;
+    }
+}
+
     const updateData = {
 
         equipment: orderData.equipment,
+
+        assignedTo: orderData.assignedTo,
 
         title: orderData.title,
 
@@ -126,7 +164,7 @@ export const updateMaintenanceOrderService = async (id, orderData) => {
         updateData,
 
         {
-            new: true,
+            returnDocument: "after",
             runValidators: true
         }
 
@@ -159,7 +197,7 @@ export const updateMaintenanceOrderStatusService = async (id, status) => {
     const error = new Error(
         `La orden ya se encuentra en estado ${status}`
     );
-    error.statusCode = 400
+    error.statusCode = 400;
     throw error;
 }
     const allowedStatuses = allowedTransitions[order.status];

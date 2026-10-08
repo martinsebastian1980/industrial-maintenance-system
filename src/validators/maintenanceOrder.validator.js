@@ -29,13 +29,20 @@ export const validateMaintenanceOrder = (data) => {
     const validPriorities = [
         "low",
         "medium",
-        "high"        
+        "high"
     ];
 
     if (!validPriorities.includes(data.priority)) {
         return {
             valid: false,
             message: "Prioridad inválida"
+        };
+    }
+
+    if (data.assignedTo && typeof data.assignedTo !== "string") {
+        return {
+            valid: false,
+            message: "El técnico asignado no es válido"
         };
     }
 

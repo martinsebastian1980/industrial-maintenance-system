@@ -317,6 +317,39 @@
 
                 </div>
 
+                <div class="field">
+
+                    <label for="assignedTo">
+                        Técnico asignado
+                    </label>
+
+                    <select
+                        id="assignedTo"
+                        name="assignedTo"
+                        required
+                    >
+
+                        <option value="">
+                            Seleccionar técnico
+                        </option>
+
+                        {{#each technicians}}
+
+                            <option
+                               value="{{_id}}"
+                                {{#if (eq _id ../maintenanceOrder.assignedTo._id)}}
+                                    selected
+                                {{/if}}
+                            >
+                                {{firstName}} {{lastName}}
+                            </option>
+
+                        {{/each}}
+
+                    </select>
+
+                </div>
+
 
                 <button
                     type="submit"
