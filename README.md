@@ -1,24 +1,30 @@
 # Sistema de Gestión de Mantenimiento Industrial
 
-Aplicación web para la gestión y seguimiento del mantenimiento de equipos industriales.
+Aplicación web para gestionar equipos industriales y órdenes de mantenimiento, con seguimiento de estados, asignación de técnicos y control de acceso según roles de usuario.
 
-El sistema permite registrar equipos, crear órdenes de mantenimiento, controlar sus estados, consultar el historial de cambios y aplicar reglas de negocio relacionadas con la eliminación de equipos y órdenes.
+El proyecto está desarrollado con **Node.js, Express y MongoDB**, aplicando arquitectura por capas, APIs REST, autenticación mediante sesiones y JWT, validaciones y reglas de negocio.
 
-## Tecnologías
+## Tecnologías principales
 
-- Node.js
-- Express
-- MongoDB Atlas
-- Mongoose
-- Express Handlebars
-- Express Session
-- JSON Web Token (JWT)
-- bcrypt
-- Nodemon
+- **Backend:** Node.js y Express
+- **Base de datos:** MongoDB Atlas y Mongoose
+- **Vistas:** Express Handlebars
+- **Autenticación:** Express Session y JSON Web Token (JWT)
+- **Seguridad:** bcrypt y autorización basada en roles
+- **Pruebas:** Node.js Test Runner
+- **Desarrollo:** Nodemon
 
-## Funcionalidades
+## Funcionalidades principales
 
-### Gestión de equipos
+- Gestión de equipos y órdenes de mantenimiento.
+- Asignación de técnicos y seguimiento de tareas.
+- Historial de cambios de estado.
+- Autenticación y autorización mediante roles: admin, supervisor y technician.
+- API REST con filtros, búsqueda, paginación y validaciones.
+- Dashboard con indicadores de equipos y órdenes.
+- Reglas de negocio para proteger la integridad de los datos.
+
+## Gestión de equipos
 
 - Crear equipos.
 - Consultar equipos.
@@ -30,7 +36,7 @@ El sistema permite registrar equipos, crear órdenes de mantenimiento, controlar
   - En mantenimiento
   - Fuera de servicio
 
-### Gestión de órdenes de mantenimiento
+## Gestión de órdenes de mantenimiento
 
 - Crear órdenes.
 - Consultar órdenes.
@@ -57,10 +63,8 @@ completed
 
 También se permite:
 
-```text
-pending → cancelled
-in_progress → cancelled
-```
+- `pending` → `cancelled`
+- `in_progress` → `cancelled`
 
 Una orden `completed` o `cancelled` no puede volver a un estado anterior.
 
@@ -81,11 +85,7 @@ Además:
 
 Las órdenes de mantenimiento pueden tener un técnico asignado.
 
-El sistema valida que el usuario seleccionado tenga el rol:
-
-```text
-technician
-```
+El sistema valida que el usuario seleccionado tenga el rol `technician`.
 
 La información del técnico asignado se obtiene mediante la relación entre las órdenes y los usuarios.
 
@@ -93,42 +93,25 @@ La información del técnico asignado se obtiene mediante la relación entre las
 
 ### Eliminación de equipos
 
-Un equipo no puede eliminarse si tiene una orden de mantenimiento:
-
-```text
-pending
-```
-
-o:
-
-```text
-in_progress
-```
+Un equipo no puede eliminarse si tiene una orden de mantenimiento en estado `pending` o `in_progress`.
 
 En ese caso, el sistema devuelve un error `409 Conflict` y muestra al usuario la orden que está bloqueando la eliminación.
 
 Cuando no existen órdenes activas, el equipo puede eliminarse.
 
-Las órdenes asociadas que se encuentran en estado:
-
-```text
-completed
-cancelled
-```
-
-también se eliminan al eliminar el equipo.
+Las órdenes asociadas que se encuentran en estado `completed` o `cancelled` también se eliminan al eliminar el equipo.
 
 ### Edición de órdenes
 
 La edición normal de una orden permite modificar:
 
-- Equipo
-- Técnico asignado
-- Título
-- Descripción
-- Tipo
-- Prioridad
-- Fecha programada
+- Equipo.
+- Técnico asignado.
+- Título.
+- Descripción.
+- Tipo.
+- Prioridad.
+- Fecha programada.
 
 El estado de la orden no se modifica desde la edición.
 
@@ -136,7 +119,7 @@ Los cambios de estado se realizan mediante el flujo específico de estados para 
 
 ## Autenticación y autorización
 
-El sistema implementa autenticación mediante **sesiones** y **JSON Web Token (JWT)**.
+El sistema implementa autenticación mediante sesiones y JSON Web Token (JWT).
 
 ### Login
 
@@ -158,28 +141,18 @@ Además, se crea una sesión para utilizar la autenticación en las vistas web.
 
 El token JWT contiene la siguiente información:
 
-```text
-id
-role
-```
+- `id`
+- `role`
 
-El token tiene una duración de:
+El token tiene una duración de **1 hora**.
 
-```text
-1 hora
-```
-
-Para acceder a rutas protegidas mediante JWT, el token debe enviarse en el header `Authorization` utilizando el formato:
+Para acceder a rutas protegidas mediante JWT, el token debe enviarse en el encabezado `Authorization` utilizando el formato:
 
 ```http
 Authorization: Bearer <token>
 ```
 
-El middleware de autenticación verifica el token y, si es válido, guarda la información decodificada en:
-
-```javascript
-req.user
-```
+El middleware de autenticación verifica el token y, si es válido, guarda la información decodificada en `req.user`.
 
 Si el token no existe, tiene un formato incorrecto, es inválido o está expirado, la API devuelve un error `401 Unauthorized`.
 
@@ -187,28 +160,26 @@ Si el token no existe, tiene un formato incorrecto, es inválido o está expirad
 
 El sistema utiliza tres roles:
 
-```text
-admin
-supervisor
-technician
-```
+- `admin`
+- `supervisor`
+- `technician`
 
 Los permisos se controlan mediante autorización basada en roles.
 
 ### Permisos principales
 
-| Funcionalidad             | Admin | Supervisor | Técnico |
-|---------------------------|-------|------------|---------|
-| Consultar equipos         |   ✓   |      ✓     |    ✓    |
-| Crear equipos             |   ✓   |            |         |
-| Editar equipos            |   ✓   |            |         |
-| Eliminar equipos          |   ✓   |            |         |
-| Consultar órdenes         |   ✓   |      ✓     |    ✓    |
-| Crear órdenes             |   ✓   |      ✓     |         |
-| Editar órdenes            |   ✓   |      ✓     |         |
-| Eliminar órdenes          |   ✓   |            |         |
-| Cambiar estado de órdenes |   ✓   |      ✓     |    ✓    |
-| Gestionar usuarios        |   ✓   |            |         |
+| Funcionalidad | Admin | Supervisor | Técnico |
+|---|:---:|:---:|:---:|
+| Consultar equipos | ✓ | ✓ | ✓ |
+| Crear equipos | ✓ | | |
+| Editar equipos | ✓ | | |
+| Eliminar equipos | ✓ | | |
+| Consultar órdenes | ✓ | ✓ | ✓ |
+| Crear órdenes | ✓ | ✓ | |
+| Editar órdenes | ✓ | ✓ | |
+| Eliminar órdenes | ✓ | | |
+| Cambiar estado de órdenes | ✓ | ✓ | ✓ |
+| Gestionar usuarios | ✓ | | |
 
 El sistema verifica los permisos directamente en las rutas protegidas, evitando que un usuario pueda acceder mediante una URL o petición directa a una función que no tiene autorizada.
 
@@ -265,9 +236,8 @@ Entre otras validaciones:
 
 La aplicación diferencia entre las peticiones de la API y las vistas web.
 
-Las rutas de API devuelven respuestas JSON.
-
-Las rutas web muestran una vista de error en caso de fallo.
+- Las rutas de API devuelven respuestas JSON.
+- Las rutas web muestran una vista de error en caso de fallo.
 
 Ejemplo:
 
@@ -283,43 +253,43 @@ La vista de error permite acceder directamente a la orden que está provocando e
 
 ### Autenticación
 
-```text
-POST   /api/auth/login
-```
+| Método | Endpoint |
+|---|---|
+| POST | `/api/auth/login` |
 
 ### Equipos
 
-```text
-GET    /api/equipment
-GET    /api/equipment/:id
-POST   /api/equipment
-PATCH  /api/equipment/:id
-DELETE /api/equipment/:id
-```
+| Método | Endpoint |
+|---|---|
+| GET | `/api/equipment` |
+| GET | `/api/equipment/:id` |
+| POST | `/api/equipment` |
+| PATCH | `/api/equipment/:id` |
+| DELETE | `/api/equipment/:id` |
 
 ### Órdenes de mantenimiento
 
-```text
-GET    /api/maintenance-orders
-GET    /api/maintenance-orders/:id
-POST   /api/maintenance-orders
-PATCH  /api/maintenance-orders/:id
-DELETE /api/maintenance-orders/:id
-PATCH  /api/maintenance-orders/:id/status
-```
+| Método | Endpoint |
+|---|---|
+| GET | `/api/maintenance-orders` |
+| GET | `/api/maintenance-orders/:id` |
+| POST | `/api/maintenance-orders` |
+| PATCH | `/api/maintenance-orders/:id` |
+| DELETE | `/api/maintenance-orders/:id` |
+| PATCH | `/api/maintenance-orders/:id/status` |
 
 ### Usuarios
 
-```text
-GET    /api/users
-GET    /api/users/:id
-POST   /api/users
-PATCH  /api/users/:id
-```
+| Método | Endpoint |
+|---|---|
+| GET | `/api/users` |
+| GET | `/api/users/:id` |
+| POST | `/api/users` |
+| PATCH | `/api/users/:id` |
 
-## Filtros y paginación
+### Filtros y paginación
 
-La consulta de órdenes admite:
+La consulta de órdenes admite los siguientes parámetros:
 
 - `status`
 - `priority`
@@ -337,19 +307,19 @@ GET /api/maintenance-orders?status=pending&priority=high&page=1&limit=10
 
 ## Instalación
 
-Clonar el repositorio:
+### 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/martinsebastian1980/industrial-maintenance-system.git
 ```
 
-Entrar al proyecto:
+### 2. Entrar al proyecto
 
 ```bash
 cd industrial-maintenance-system
 ```
 
-Instalar dependencias:
+### 3. Instalar dependencias
 
 ```bash
 npm install
